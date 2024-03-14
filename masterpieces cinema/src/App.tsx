@@ -1,16 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import ReservationForm from './components/ReservationForm/ReservationForm';
-import SearchBar from './components/SearchBar/SearchBar';
+import HomePage from './pages/HomePage';
+
 
 const App: React.FC = () => {
   return (
     <Router>
       <div className="App">
         <Routes>
-          <Route path="/reserve-tickets" element={<ReservationForm />} />
-          <Route path="/search-bar" element={<SearchBar/>} />
-          <Route path="/" element={<h1>Welcome to Masterpieces Cinema!</h1>} />
+          <Route path="/" element={<>
+            <h1>Welcome to Masterpieces Cinema!</h1>
+            <HomePage />
+          </>} />
+          
         </Routes>
       </div>
     </Router>

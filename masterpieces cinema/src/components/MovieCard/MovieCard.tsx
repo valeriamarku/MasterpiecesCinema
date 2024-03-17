@@ -8,8 +8,7 @@ interface Props {
   movie: Movie;
 }
 
-const addToLikedMovies = (movie: string) => {
-  // Implement the logic to add the movie to the liked movies list
+const addToLikedMovies = (_movie: string) => {
 };
 const MovieCard: React.FC<Props> = ({ movie }) => {
   return (

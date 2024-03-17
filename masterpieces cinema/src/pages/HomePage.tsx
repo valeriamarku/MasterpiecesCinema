@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import SearchBar from '../components/SearchBar/SearchBar';
 import MovieListing from '../components/MovieListing/MovieListing';
 import Api from '../fetch/Api';
 import Header from '../components/Header/Header';

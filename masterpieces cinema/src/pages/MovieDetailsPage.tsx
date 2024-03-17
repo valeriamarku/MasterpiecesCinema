@@ -1,30 +1,36 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import MovieDetails from '../components/MovieDetails/MovieDetails';
-import { Movie } from '../types/Movie'; 
+import { Movie } from '../types/Movie';
+import Api from '../fetch/Api';
+
 
 const MovieDetailsPage: React.FC = () => {
-  const { id } = useParams<{ id?: string }>(); 
+  const { id } = useParams<{ id?: string }>();
+  const [movieDetails, setMovieDetails] = useState<Movie | null>(null);
 
-  const movieId = id || ''; 
-  
-  const movieDetails: Movie = {
-      id: movieId,
-      title: '',
-      original_title: '',
-      image: '',
-      movie_banner: '',
-      description: '',
-      director: '',
-      release_date: '',
-      running_time: '',
-      rt_score: ''
-  };
+  useEffect(() => {
+    const fetchMovie = async () => {
+      try {
+        if (id) {
+          const movie = await Api.fetchMovieDetails(id);
+          setMovieDetails(movie);
+        }
+      } catch (error) {
+        console.error('Error fetching movie details:', error);
+      }
+    };
+
+    fetchMovie();
+  }, [id]);
 
   return (
     <div>
       <h1>Movie Details</h1>
-      <MovieDetails movie={movieDetails} />
+      {movieDetails && <MovieDetails movie={movieDetails} />}
+      <Link to="/reserve">
+      <button>Reserve</button>
+    </Link>
     </div>
   );
 };

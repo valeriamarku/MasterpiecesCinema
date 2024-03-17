@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import SearchBar from '../components/SearchBar/SearchBar';
 import MovieListing from '../components/MovieListing/MovieListing';
 import Api from '../fetch/Api';
+import Header from '../components/Header/Header';
 
 interface Movie {
   id: string;
@@ -35,7 +36,8 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="home-page">
-      <SearchBar />
+      <Header/>
+      <h1>Welcome to Masterpieces Cinema!</h1>
       <MovieListing movies={movies} />
     </div>
   );

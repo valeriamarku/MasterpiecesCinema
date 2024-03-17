@@ -13,6 +13,16 @@ const Api = {
       return [];
     }
   },
+
+  fetchMovieDetails: async (id: string): Promise<Movie | null> => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/films/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching movie details for ID ${id}:`, error);
+      return null;
+    }
+  }
 };
 
 export default Api;

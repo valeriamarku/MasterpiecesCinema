@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Header from '../components/Header/Header';
 
 const MyTickets: React.FC = () => {
   const [ticket, setTicket] = useState<any>(null);
@@ -21,6 +22,7 @@ const MyTickets: React.FC = () => {
 
   return (
     <div className="my-tickets">
+      <Header/>
       <h2>My Ticket</h2>
       {ticket && (
         <div>

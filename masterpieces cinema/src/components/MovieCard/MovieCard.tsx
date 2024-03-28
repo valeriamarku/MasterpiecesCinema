@@ -8,19 +8,15 @@ interface Props {
   movie: Movie;
 }
 
-const addToLikedMovies = (_movie: string) => {
-};
 const MovieCard: React.FC<Props> = ({ movie }) => {
   return (
-    <>
     <div className={styles.movieCard}>
-    <LikeButton addToLikedMovies={addToLikedMovies} />
-    <Link to={`/movie-details/${movie.id}`} >
-      <img src={movie.image} alt={movie.title} />
-      <h2>{movie.title}</h2>
-    </Link>
+      <LikeButton movie={movie} />
+      <Link to={`/movie-details/${movie.id}`} >
+        <img src={movie.image} alt={movie.title} />
+        <h2>{movie.title}</h2>
+      </Link>
     </div>
-    </>
   );
 };
 

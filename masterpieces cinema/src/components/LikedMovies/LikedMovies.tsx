@@ -1,13 +1,19 @@
 import React from 'react';
+import { useLikedMovies } from '../LikedMovies/LikedMoviesContext';
 
-const LikedMovies: React.FC<{ likedMovies: string[]; removeFromLikedMovies: (movie: string) => void }> = ({ likedMovies, removeFromLikedMovies }) => {
+const LikedMovies: React.FC = () => {
+  const { likedMovies } = useLikedMovies();
+
   return (
-    <div className="liked-movies">
+    <div>
       <h2>Liked Movies</h2>
       <ul>
         {likedMovies.map((movie, index) => (
           <li key={index}>
-            {movie} <button onClick={() => removeFromLikedMovies(movie)}>Remove</button>
+            <img src={movie.image} alt={movie.title} />
+            <div>
+              <h3>{movie.title}</h3>
+            </div>
           </li>
         ))}
       </ul>

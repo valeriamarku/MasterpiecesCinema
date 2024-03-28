@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const MyTicketsPage: React.FC = () => {
+const MyTickets: React.FC = () => {
   const [ticket, setTicket] = useState<any>(null);
 
   const fetchUserTicket = async () => {
@@ -20,7 +20,7 @@ const MyTicketsPage: React.FC = () => {
   }, []); 
 
   return (
-    <div className="my-tickets-page">
+    <div className="my-tickets">
       <h2>My Ticket</h2>
       {ticket && (
         <div>
@@ -32,4 +32,4 @@ const MyTicketsPage: React.FC = () => {
   );
 };
 
-export default MyTicketsPage;
+export default MyTickets;

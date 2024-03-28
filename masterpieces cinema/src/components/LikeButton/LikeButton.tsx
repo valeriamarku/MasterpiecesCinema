@@ -1,13 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { HeartOutlined, HeartFilled } from '@ant-design/icons';
+import { useLikedMovies } from '../LikedMovies/LikedMoviesContext';
+import { Movie } from '../../types/Movie';
 
-const LikeButton: React.FC<{ addToLikedMovies: (movie: string) => void }> = ({ addToLikedMovies }) => {
-  const [liked, setLiked] = useState(false);
+interface LikeButtonProps {
+  movie: Movie;
+}
+
+const LikeButton: React.FC<LikeButtonProps> = ({ movie }) => {
+  const { addToLikedMovies, likedMovies } = useLikedMovies();
+  const [liked, setLiked] = React.useState(false);
+
+  useEffect(() => {
+    if (likedMovies.some(m => m.id === movie.id)) {
+      setLiked(true);
+    } else {
+      setLiked(false);
+    }
+  }, [movie.id, likedMovies]);
 
   const handleLike = () => {
     setLiked(!liked);
     if (!liked) {
-      addToLikedMovies('Sample Movie');
+      addToLikedMovies(movie);
     }
   };
 

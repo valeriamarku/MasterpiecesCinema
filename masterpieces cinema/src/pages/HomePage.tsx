@@ -2,32 +2,24 @@ import React, { useEffect, useState } from 'react';
 import MovieListing from '../components/MovieListing/MovieListing';
 import Api from '../fetch/Api';
 import Header from '../components/Header/Header';
-
-interface Movie {
-  id: string;
-  title: string;
-  original_title: string;
-  image: string;
-  movie_banner: string;
-  description: string;
-  director: string;
-  release_date: string;
-  running_time: string;
-  rt_score: string;
-}
+import { Movie } from '../types/Movie';
 
 const HomePage: React.FC = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [filteredMovies, setFilteredMovies] = useState<Movie[]>([]);
 
   const fetchMovies = async () => {
     try {
-      const fetchedMovies = await Api.fetchMovies();
+      const fetchedMovies: Movie[] = await Api.fetchMovies();
       setMovies(fetchedMovies);
     } catch (error) {
-      console.error('Error fetching movies:', error);
+      setError('Error fetching movies. Please try again later.');
+    } finally {
+      setLoading(false);
     }
   };
-
 
   useEffect(() => {
     fetchMovies();
@@ -35,9 +27,15 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="home-page">
-      <Header/>
+      <Header movies={movies} setFilteredMovies={setFilteredMovies} />
       <h1>Welcome to Masterpieces Cinema!</h1>
-      <MovieListing movies={movies} />
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : (
+        <MovieListing movies={filteredMovies.length ? filteredMovies : movies} />
+      )}
     </div>
   );
 };

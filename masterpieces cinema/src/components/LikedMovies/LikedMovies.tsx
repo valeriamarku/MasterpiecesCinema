@@ -1,14 +1,22 @@
 import React from 'react';
 import { useLikedMovies } from '../LikedMovies/LikedMoviesContext';
+import Header from '../Header/Header';
+import { Movie } from '../../types/Movie';
 
 const LikedMovies: React.FC = () => {
   const { likedMovies } = useLikedMovies();
+  const [filteredLikedMovies, setFilteredLikedMovies] = React.useState(likedMovies);
+  
+  const handleSearch = (filteredMovies: Movie[]) => {
+    setFilteredLikedMovies(filteredMovies);
+  };
 
   return (
     <div>
+      <Header movies={likedMovies} setFilteredMovies={handleSearch} />
       <h2>Liked Movies</h2>
       <ul>
-        {likedMovies.map((movie, index) => (
+        {filteredLikedMovies.map((movie, index) => (
           <li key={index}>
             <img src={movie.image} alt={movie.title} />
             <div>

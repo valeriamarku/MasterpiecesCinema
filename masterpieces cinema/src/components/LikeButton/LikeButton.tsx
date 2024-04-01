@@ -8,21 +8,19 @@ interface LikeButtonProps {
 }
 
 const LikeButton: React.FC<LikeButtonProps> = ({ movie }) => {
-  const { addToLikedMovies, likedMovies } = useLikedMovies();
+  const { addToLikedMovies, removeFromLikedMovies, likedMovies } = useLikedMovies();
   const [liked, setLiked] = React.useState(false);
 
   useEffect(() => {
-    if (likedMovies.some(m => m.id === movie.id)) {
-      setLiked(true);
-    } else {
-      setLiked(false);
-    }
+    setLiked(likedMovies.some(m => m.id === movie.id));
   }, [movie.id, likedMovies]);
 
   const handleLike = () => {
     setLiked(!liked);
     if (!liked) {
       addToLikedMovies(movie);
+    } else {
+      removeFromLikedMovies(movie.id); 
     }
   };
 

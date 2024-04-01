@@ -1,37 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import Header from '../components/Header/Header';
+import React from 'react';
+import { useTicketContext } from '../components/MyTickets/TicketContext'; 
 
-const MyTickets: React.FC = () => {
-  const [ticket, setTicket] = useState<any>(null);
-
-  const fetchUserTicket = async () => {
-    try {
-      const response = await fetch('API_ENDPOINT/tickets/user'); 
-      const data = await response.json();
-      setTicket(data); 
-    } catch (error) {
-      console.error('Error fetching user ticket:', error);
-    }
-  };
-
- 
-  useEffect(() => {
-    fetchUserTicket();
-  }, []); 
+const MyTicketPage: React.FC = () => {
+  const { tickets } = useTicketContext();
 
   return (
-    <div className="my-tickets">
-      <Header/>
-      <h2>My Ticket</h2>
-      {ticket && (
-        <div>
-          <p>Ticket ID: {ticket.id}</p>
-        </div>
-      )}
-      <Link to="/">Back to Home</Link>
+    <div>
+      <h1>My Tickets</h1>
+      <ul>
+        {tickets.map(ticket => (
+          <li key={ticket.id}>
+            Ticket #{ticket.id}: Full Name: {ticket.fullName} - Seat: {ticket.seat} - Payment: {ticket.paymentMethod} - Price: {ticket.price} ALL - Movie: {ticket.movie}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
 
-export default MyTickets;
+export default MyTicketPage;

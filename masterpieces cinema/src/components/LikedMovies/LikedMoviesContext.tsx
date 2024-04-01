@@ -1,14 +1,22 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface Movie {
-  image: string | undefined;
+  image: string;
   id: string;
   title: string;
+  original_title: string;
+  movie_banner: string;
+  description: string;
+  director: string;
+  release_date: string;
+  running_time: string;
+  rt_score: string;
 }
 
 interface LikedMoviesContextType {
   likedMovies: Movie[];
   addToLikedMovies: (movie: Movie) => void;
+  removeFromLikedMovies: (movieId: string) => void;
 }
 
 interface LikedMoviesProviderProps {
@@ -23,7 +31,6 @@ export const LikedMoviesProvider: React.FC<LikedMoviesProviderProps> = ({ childr
     return storedLikedMovies ? JSON.parse(storedLikedMovies) : [];
   });
 
-
   useEffect(() => {
     localStorage.setItem('likedMovies', JSON.stringify(likedMovies));
   }, [likedMovies]);
@@ -32,8 +39,12 @@ export const LikedMoviesProvider: React.FC<LikedMoviesProviderProps> = ({ childr
     setLikedMovies(prevLikedMovies => [...prevLikedMovies, movie]);
   };
 
+  const removeFromLikedMovies = (movieId: string) => {
+    setLikedMovies(prevLikedMovies => prevLikedMovies.filter(movie => movie.id !== movieId));
+  };
+
   return (
-    <LikedMoviesContext.Provider value={{ likedMovies, addToLikedMovies }}>
+    <LikedMoviesContext.Provider value={{ likedMovies, addToLikedMovies, removeFromLikedMovies }}>
       {children}
     </LikedMoviesContext.Provider>
   );

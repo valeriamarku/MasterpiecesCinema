@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useTicketContext } from '../MyTickets/TicketContext';
+import Header from '../Header/Header';
+import { Movie } from '../../types/Movie';
 
 interface Ticket {
   id: number;
@@ -15,10 +17,8 @@ const ReservationForm: React.FC = () => {
   const [numberOfTickets, setNumberOfTickets] = useState<string>('');
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [reservationType, setReservationType] = useState<string>('');
-  const location = useLocation();
-  const selectedMovie = location.state ? (location.state as { movie: string }).movie : 'Default Movie';
-
-  console.log('Received movie title:', selectedMovie);
+  const selectedMovie = useParams<{ movieTitle?: string }>()?.movieTitle ?? "NULL";
+  const [, setFilteredMovies] = useState<Movie[]>([]);
 
   const { addTicket } = useTicketContext();
   const navigate = useNavigate();
@@ -47,7 +47,7 @@ const ReservationForm: React.FC = () => {
         id: index + 1, 
         paymentMethod: reservationType === 'reservation' ? 'theater' : 'card', 
         price: 700, 
-        movie: selectedMovie 
+        movie: String(selectedMovie) 
       });
     }));
     
@@ -111,6 +111,7 @@ const ReservationForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className="reservation-form">
+      <Header setFilteredMovies={setFilteredMovies} />
       Number of Tickets:
       <input
         type="number"

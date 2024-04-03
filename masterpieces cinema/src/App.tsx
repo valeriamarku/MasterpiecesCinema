@@ -24,7 +24,7 @@ const App: React.FC = () => {
                 }
               />
               <Route path="/movie-details/:id" element={<MovieDetailsPage />} />
-              <Route path="/reserve" element={<ReservationForm />} />
+              <Route path="/reserve/:movieTitle" element={<ReservationForm />} />
               <Route path="/my-tickets" element={<MyTickets/>} />
               <Route path="/liked-movies" element={<LikedMovies/>} />
             </Routes>

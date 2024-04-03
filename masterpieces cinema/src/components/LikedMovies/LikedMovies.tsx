@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLikedMovies } from '../LikedMovies/LikedMoviesContext';
 import Header from '../Header/Header';
+import MovieListing from '../MovieListing/MovieListing';
 import { Movie } from '../../types/Movie';
 
 const LikedMovies: React.FC = () => {
@@ -13,18 +14,9 @@ const LikedMovies: React.FC = () => {
 
   return (
     <div>
-      <Header movies={likedMovies} setFilteredMovies={handleSearch} />
+      <Header setFilteredMovies={handleSearch} />
       <h2>Liked Movies</h2>
-      <ul>
-        {filteredLikedMovies.map((movie, index) => (
-          <li key={index}>
-            <img src={movie.image} alt={movie.title} />
-            <div>
-              <h3>{movie.title}</h3>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <MovieListing movies={filteredLikedMovies} />
     </div>
   );
 };

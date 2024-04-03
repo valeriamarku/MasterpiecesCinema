@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTicketContext } from '../components/MyTickets/TicketContext'; 
+import Header from '../components/Header/Header';
+import { Movie } from '../types/Movie';
 
 const MyTicketPage: React.FC = () => {
   const { tickets } = useTicketContext();
+  const [, setFilteredMovies] = useState<Movie[]>([]);
 
   return (
     <div>
+      <Header setFilteredMovies={setFilteredMovies} />
       <h1>My Tickets</h1>
       <ul>
         {tickets.map(ticket => (
@@ -19,3 +23,4 @@ const MyTicketPage: React.FC = () => {
 };
 
 export default MyTicketPage;
+

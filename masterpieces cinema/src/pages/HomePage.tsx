@@ -4,6 +4,7 @@ import MovieListing from '../components/MovieListing/MovieListing';
 import Api from '../fetch/Api';
 import Header from '../components/Header/Header';
 import { Movie } from '../types/Movie';
+import style from './HomePage.module.css';
 
 const HomePage: React.FC = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -39,17 +40,20 @@ const HomePage: React.FC = () => {
     }
   }, [search, movies]);
 
+  let renderContent: JSX.Element;
+  if (loading) {
+    renderContent = <p>Loading...</p>;
+  } else if (error) {
+    renderContent = <p className={style.error}>{error}</p>;
+  } else {
+    renderContent = <MovieListing movies={filteredMovies} />;
+  }
+
   return (
-    <div className="home-page">
+    <div className={style.homepage}>
       <Header setFilteredMovies={setFilteredMovies} />
-      <h1>Welcome to Masterpieces Cinema!</h1>
-      {loading ? (
-        <p>Loading...</p>
-      ) : error ? (
-        <p>{error}</p>
-      ) : (
-        <MovieListing movies={filteredMovies} />
-      )}
+      <h1 className={style.title}>Welcome to Masterpieces Cinema!</h1>
+      {renderContent}
     </div>
   );
 };

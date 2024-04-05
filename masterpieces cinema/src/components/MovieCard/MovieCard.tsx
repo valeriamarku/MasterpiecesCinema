@@ -11,11 +11,13 @@ interface Props {
 const MovieCard: React.FC<Props> = ({ movie }) => {
   return (
     <div className={styles.movieCard}>
-      <LikeButton movie={movie} />
-      <Link to={`/movie-details/${movie.id}`} >
+      <Link to={`/movie-details/${movie.id}`} className={styles.link}>
         <img src={movie.image} alt={movie.title} />
         <h2>{movie.title}</h2>
       </Link>
+      <div className={styles.likeButton}>
+        <LikeButton movie={movie} />
+      </div>
     </div>
   );
 };

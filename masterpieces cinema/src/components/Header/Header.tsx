@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Movie } from '../../types/Movie';
 import Api from '../../fetch/Api';
 import style from './Header.module.css';
+import { Input, Button } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 
 interface HeaderProps {
   setFilteredMovies: (filteredMovies: Movie[]) => void;
@@ -11,22 +13,27 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ setFilteredMovies }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [suggestions, setSuggestions] = useState<Movie[]>([]);
-  const navigate = useNavigate();
+  const [favoritePage, setFavoritePage] = useState<boolean>(false);
+  const [home, setHomePage] = useState<boolean>(false);
+  const [tickets, setTicketPage] = useState<boolean>(false);
   const [movies, setMovies] = useState<Movie[]>([]);
   const suggestionsRef = useRef<HTMLUListElement>(null);
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
         const fetchedMovies: Movie[] = await Api.fetchMovies();
-        setMovies(fetchedMovies); 
+        setMovies(fetchedMovies);
       } catch (error) {
-        console.error('Error fetching movies. Please try again later.');
+        console.error('Error fetching movies.');
       }
     };
 
     fetchMovies();
-  }, []); 
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -42,6 +49,19 @@ const Header: React.FC<HeaderProps> = ({ setFilteredMovies }) => {
     };
   }, []);
 
+  useEffect(() => {
+    setHomePage(location.pathname === '/');
+  }, [location]);
+
+  useEffect(() => {
+    setTicketPage(location.pathname === '/my-tickets');
+  }, [location]);
+
+  useEffect(() => {
+    setFavoritePage(location.pathname === '/liked-movies');
+  }, [location]);
+
+
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value.toLowerCase();
     setSearchQuery(query);
@@ -55,7 +75,7 @@ const Header: React.FC<HeaderProps> = ({ setFilteredMovies }) => {
   const handleSuggestionClick = (movieId: string) => {
     navigate(`/movie-details/${movieId}`);
     setSearchQuery('');
-    setSuggestions([]); 
+    setSuggestions([]);
   };
 
   const handleSearch = () => {
@@ -63,16 +83,25 @@ const Header: React.FC<HeaderProps> = ({ setFilteredMovies }) => {
   };
 
   return (
-    <header className={style.header}>
+    <div className={style.header}>
       <nav className={style.nav}>
         <div className={style.linkContainer}>
-          <Link to="/" className={style.link}>Home</Link>
-          <Link to="/my-tickets" className={style.link}>My Tickets</Link>
-          <Link to="/liked-movies" className={style.link}>Favorites</Link>
+          <Link to="/" className={`${style.link} ${home ? style.active : ''}`}>Home</Link>
+          <div className={style.separator}></div>
+          <Link to="/my-tickets" className={`${style.link} ${tickets ? style.active : ''}`}>My Tickets</Link>
+          <div className={style.separator}></div>
+          <Link to="/liked-movies" className={`${style.link} ${favoritePage ? style.active : ''}`}>Favorites</Link>
         </div>
         <div className={style.searchContainer}>
-          <input type="text" placeholder="Search movies..." value={searchQuery} onChange={handleSearchChange} className={style.searchInput} />
-          <button onClick={handleSearch} className={style.searchButton}>Search</button>
+          <Input
+            placeholder="Search movies..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className={style.searchInput}
+            suffix={
+              <Button type="primary" icon={<SearchOutlined />} onClick={handleSearch} />
+            }
+          />
           {suggestions.length > 0 && (
             <ul className={style.suggestions} ref={suggestionsRef}>
               {suggestions.map(movie => (
@@ -84,7 +113,7 @@ const Header: React.FC<HeaderProps> = ({ setFilteredMovies }) => {
           )}
         </div>
       </nav>
-    </header>
+    </div>
   );
 };
 

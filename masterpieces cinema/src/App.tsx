@@ -7,20 +7,19 @@ import MyTickets from "./pages/MyTicketsPage";
 import LikedMovies from "./components/LikedMovies/LikedMovies";
 import { LikedMoviesProvider } from "./components/LikedMovies/LikedMoviesContext";
 import { TicketProvider } from "./components/MyTickets/TicketContext";
+import "./App.css";
 
 const App: React.FC = () => {
   return (
     <LikedMoviesProvider>
       <TicketProvider>
         <Router>
-          <div className="App">
+          <div className={"App"}>
             <Routes>
               <Route
                 path="/"
                 element={
-                  <>
-                    <HomePage />
-                  </>
+                  <HomePage />
                 }
               />
               <Route path="/movie-details/:id" element={<MovieDetailsPage />} />

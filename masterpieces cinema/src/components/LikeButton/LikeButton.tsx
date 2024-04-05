@@ -25,9 +25,9 @@ const LikeButton: React.FC<LikeButtonProps> = ({ movie }) => {
   };
 
   return (
-    <button onClick={handleLike} className={`like-button ${liked ? 'liked' : ''}`}>
-      {liked ? <HeartFilled style={{ color: 'red' }} /> : <HeartOutlined />}
-    </button>
+    <div onClick={handleLike}>
+      {liked ? <HeartFilled /> : <HeartOutlined />}
+    </div>
   );
 };
 

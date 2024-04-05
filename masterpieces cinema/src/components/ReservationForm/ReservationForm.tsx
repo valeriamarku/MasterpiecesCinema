@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useTicketContext } from '../MyTickets/TicketContext';
 import Header from '../Header/Header';
 import { Movie } from '../../types/Movie';
+import style from './ReservationForm.module.css';
 
 interface Ticket {
   id: number;
@@ -84,7 +85,7 @@ const ReservationForm: React.FC = () => {
     const inputs: JSX.Element[] = [];
     for (let i = 0; i < parseInt(numberOfTickets); i++) {
       inputs.push(
-        <div key={i}>
+        <div key={i} className={style.ticket}>
           <label>
             Full Name:
             <input
@@ -110,37 +111,40 @@ const ReservationForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="reservation-form">
-      <Header setFilteredMovies={setFilteredMovies} />
-      Number of Tickets:
-      <input
-        type="number"
-        value={numberOfTickets}
-        onChange={(e) => {
-          if (parseInt(e.target.value) <= 5) {
-            setNumberOfTickets(e.target.value);
-          }
-        }}
-        min="1"
-        max="5"
-        required
-      />
-
-      <label>
-        Reservation Type:
-        <select
-          value={reservationType}
-          onChange={(e) => setReservationType(e.target.value)}
-          required
-        >
-          <option value="">Select Reservation Type</option>
-          <option value="reservation">Reservation (Payment at Theater)</option>
-          <option value="purchase">Online Purchase</option>
-        </select>
-      </label>
-      {renderTicketInputs()}
+    <div>
+       <Header setFilteredMovies={setFilteredMovies} />
+ <form onSubmit={handleSubmit} className={style.reservationForm}>
+      <h2 className={style.title}>Reservation Form for {selectedMovie}</h2>
+      <div className={style.inputContainer}>
+        <label>
+          Number of Tickets:
+          <input
+            type="number"
+            value={numberOfTickets}
+            onChange={(e) => setNumberOfTickets(e.target.value)}
+            min="1"
+            max="5"
+            required
+          />
+        </label>
+        <label>
+          Reservation Type:
+          <select
+            value={reservationType}
+            onChange={(e) => setReservationType(e.target.value)}
+            required
+          >
+            <option value="">Select Reservation Type</option>
+            <option value="reservation">Reservation (Payment at Theater)</option>
+            <option value="purchase">Online Purchase</option>
+          </select>
+        </label>
+      </div>
+      <div className={style.ticketInputs}>
+        {renderTicketInputs()}
+      </div>
       {reservationType === "purchase" && (
-        <>
+        <div className={style.paymentDetails}>
           <label>
             Card Number:
             <input type="text" required />
@@ -153,10 +157,11 @@ const ReservationForm: React.FC = () => {
             Expiration Date:
             <input type="text" required />
           </label>
-        </>
+        </div>
       )}
-      <button type="submit">Submit</button>
+      <button type="submit" className={style.submitButton}>Submit</button>
     </form>
+    </div>
   );
 };
 

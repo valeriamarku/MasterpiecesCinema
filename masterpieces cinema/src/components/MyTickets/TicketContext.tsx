@@ -18,7 +18,7 @@ const TicketContext = createContext<TicketContextType | undefined>(undefined);
 
 export const TicketProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [tickets, setTickets] = useState<Ticket[]>(() => {
-    return JSON.parse(localStorage.getItem('tickets') || '[]') as Ticket[];
+    return JSON.parse(localStorage.getItem('tickets') ?? '[]') as Ticket[];
   });
 
   useEffect(() => {
@@ -49,11 +49,12 @@ export const TicketProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 };
 
 
-
 export const useTicketContext = () => {
   const context = useContext(TicketContext);
   if (!context) {
     throw new Error('useTicketContext must be used within a TicketProvider');
   }
   return context;
-};
+}
+
+export default TicketContext;

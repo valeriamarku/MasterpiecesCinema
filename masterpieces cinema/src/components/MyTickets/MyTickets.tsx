@@ -14,7 +14,7 @@ const MyTicketsPage: React.FC = () => {
   }, []); 
 
   return (
-    <div className="my-tickets-page">
+    <div>
       <h2>My Purchased Tickets</h2>
       <ul>
         {tickets.map((ticket, index) => (
